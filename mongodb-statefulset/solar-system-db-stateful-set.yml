@@ -1,0 +1,46 @@
+# mongo-statefulset.yml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+  namespace: prod-ns
+  labels:
+    app: mongo
+spec:
+  # The serviceName MUST match the headless service name above.
+  serviceName: mongo-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: hemanthreddy739/solar-system-mongodb:prod
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 27017
+          name: mongo
+          protocol: TCP
+        volumeMounts:
+        - name: mongo-volume
+          mountPath: /data/db
+  # This block automatically creates a PersistentVolumeClaim (PVC)
+  # for each pod in the StatefulSet.
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-volume
+    spec:
+      # This is an example, you should use the storage class name that
+      # matches your EKS cluster setup. For instance, 'gp2', 'gp3', or a custom one.
+      storageClassName: gp2 
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          # Requesting 5Gi of storage. Adjust as needed.
+          storage: 5Gi

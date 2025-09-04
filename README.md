@@ -1,1 +1,1 @@
-# iac-solar-system-project
+# iac code for solar system project

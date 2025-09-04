@@ -1,0 +1,19 @@
+# mongo-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+  namespace: prod-ns
+  labels:
+    app: mongo
+spec:
+  # The key to a headless service is to set clusterIP to None.
+  # This makes the service return the DNS records of the pods directly.
+  clusterIP: None
+  ports:
+  - name: mongo
+    port: 27017
+    targetPort: 27017
+  selector:
+    # This selector must match the pod labels in the StatefulSet.
+    app: mongo

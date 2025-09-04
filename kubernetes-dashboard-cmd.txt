@@ -1,0 +1,8 @@
+# accessing the dashboard through kubectl port-forward.
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+
+# generating the access token
+kubectl -n kubernetes-dashboard create token admin-user
+
+# command to increase the load and test the 'hpa':-
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never --namespace=prod-ns -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://solar-system:3000 > /dev/null; done"
