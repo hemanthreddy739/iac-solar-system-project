@@ -1,3 +1,5 @@
 .devcontainer/
 .terraform.lock.hcl
 .terraform/
+aws/
+awscliv2.zip
